@@ -25,7 +25,15 @@ function login_tools_admin() {
         '#description' => t('Local path to the login page'),
         '#maxlength' => 256,
         );
-
+    
+    $form['login_tools_title'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Message to accompany login link'),
+        '#default_value' => variable_get('login_tools_title', t('Cornell login required for access to form')),
+        '#description' => t('Messsage to accompany login link'),
+        '#maxlength' => 256,
+        );
+    
     return system_settings_form($form);
 }
 
