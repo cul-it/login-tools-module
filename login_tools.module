@@ -79,5 +79,5 @@ function login_tools_block_view($delta) {
             $block['content'] = $login;
             break;
     }
-        
+    return $block;       
 }
