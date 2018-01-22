@@ -61,7 +61,7 @@ function login_tools_menu() {
  */
 function login_tools_block_info() {
     // TODO Rename block deltas (e.g. delta-0) to readable strings.
-    $blocks['login_tools']['info'] = t('login_tools');
+    $blocks['login_tools']['info'] = t('Login Tools - require login to view a form');
     $blocks['login_tools']['cache'] = DRUPAL_NO_CACHE;
     return $blocks;
   }
