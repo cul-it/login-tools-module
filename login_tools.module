@@ -68,13 +68,9 @@ function login_tools_block_view($delta) {
             dpm($path, 'path');
             $login = l(t('Login required'), 
                 variable_get('login_tools_path', 'saml_login'),
-                array('query' => 
-                    array('destination' => $path, 
-                        'attributes' => 
-                            array('title' => t('Login, then return to this form.')
-                            )
-                        )
-                    )
+                array('query' => array('destination' => $path), 
+                    'attributes' => array('title' => t('Login, then return to this form.')),
+                )
             );
             $block['subject'] = t('Cornell login required for access to form');
             $block['content'] = $login;
