@@ -65,6 +65,7 @@ function login_tools_block_view($delta) {
     switch ($delta) {
         case 'login_tools':
             $path = request_path();
+            dpm($path, 'path');
             $login = l(t('Login required'), 
                 variable_get('login_tools_path', 'saml_login'),
                 array('query' => 
