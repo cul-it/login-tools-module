@@ -77,11 +77,9 @@ function login_tools_block_view($delta) {
                 $block['content'] = '';                    
             }
             else {
-                $path = current_path();
-                $path_alias = drupal_lookup_path('alias',$path);
                 $login_page = variable_get('login_tools_path', 'saml_login');
                 $login = t('<a href="@url" title="@title">Login required</a>',
-                    array('@url' => url($login_page, array('query' => array('destination' => $path_alias))),
+                    array('@url' => url($login_page, array('query' => drupal_get_destination())),
                         '@title' => t('Login, then return to this page')));
                 $block['subject'] = variable_get('login_tools_title', t('Cornell login required for access to form'));
                 $block['content'] = $login;
