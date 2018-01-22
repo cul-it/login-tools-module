@@ -1,0 +1,83 @@
+<?php
+
+/**
+ * Implements hook_permission().
+ */
+function login_tools_permission() {
+    return array(
+        'administer login tools settings' => array(
+          'title' => t('Administer settings for login tools'),
+          'description' => t('Perform administration tasks for login tools.'),
+        ),
+      );    
+}
+/**
+ * administration settings for login_tools
+ * @return array             modified form
+ */
+function login_tools_admin() {
+    $form array();
+    
+    $form['login_tools_path'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Path to login page'),
+        '#default_value' => variable_get('login_tools_path', 'saml_login'),
+        '#description' => t('Local path to the login page'),
+        '#maxlength' => 256,
+        );
+
+    return system_settings_form($form);
+}
+
+/**
+ * Implements hook_menu().
+ */
+function login_tools_menu() {
+
+    $items = array();
+  
+    $items['admin/settings/login_tools'] = array(
+      'title' => 'Login tools module settings',
+      'description' => 'Set up the login path',
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('login_tools_admin'),
+      'access arguments' => array('administer login tools settings'),
+      'type' => MENU_NORMAL_ITEM,
+     );
+  
+    return $items;
+  }
+  
+/**
+ * Implements hook_block_info().
+ */
+function login_tools_block_info() {
+    // TODO Rename block deltas (e.g. delta-0) to readable strings.
+    $blocks['login_tools']['info'] = t('login_tools');
+    $blocks['login_tools']['cache'] = DRUPAL_CACHE_PER_ROLE;
+    return $blocks;
+  }
+
+/**
+ * Implements hook_block_view().
+ */
+function login_tools_block_view($delta) {
+    switch ($delta) {
+        case 'login_tools':
+            $path = request_path();
+            $login = l(t('Login required'), 
+                variable_get('login_tools_path', 'saml_login'),
+                array('query' => 
+                    array('destination' => $path, 
+                        'attributes' => 
+                            array('title' => t('Login, then return to this form.')
+                            )
+                        )
+                    )
+            );
+            $block['subject'] = t('Cornell login required for access to form');
+            $block['content'] = $login;
+            break;
+    }
+        
+}
