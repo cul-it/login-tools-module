@@ -50,7 +50,7 @@ function login_tools_menu() {
       'page callback' => 'drupal_get_form',
       'page arguments' => array('login_tools_admin'),
       'access arguments' => array('administer login tools settings'),
-      'type' => MENU_NORMAL_ITEM,
+      'type' => MENU_CALLBACK,
      );
   
     return $items;
