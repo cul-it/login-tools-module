@@ -1,0 +1,6 @@
+name = Login Tools
+description = Tools related to login
+core = 7.x
+php = 5.2
+package = Cornell University Library
+configure = admin/settings/login_tools
