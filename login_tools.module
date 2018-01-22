@@ -16,7 +16,7 @@ function login_tools_permission() {
  * @return array             modified form
  */
 function login_tools_admin() {
-    $form array();
+    $form = array();
     
     $form['login_tools_path'] = array(
         '#type' => 'textfield',
