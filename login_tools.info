@@ -3,4 +3,5 @@ description = Tools related to login
 core = 7.x
 php = 5.2
 package = Cornell University Library
+dependencies[] = stringoverrides:stringoverrides
 configure = admin/settings/login_tools
