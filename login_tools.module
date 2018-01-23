@@ -16,7 +16,7 @@ function login_tools_permission() {
  * @return array             modified form
  */
 function login_tools_admin() {
-    $form array();
+    $form = array();
     
     $form['login_tools_path'] = array(
         '#type' => 'textfield',
@@ -25,7 +25,15 @@ function login_tools_admin() {
         '#description' => t('Local path to the login page'),
         '#maxlength' => 256,
         );
-
+    
+    $form['login_tools_title'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Message to accompany login link'),
+        '#default_value' => variable_get('login_tools_title', t('Cornell login required for access to form')),
+        '#description' => t('Messsage to accompany login link'),
+        '#maxlength' => 256,
+        );
+    
     return system_settings_form($form);
 }
 
@@ -42,7 +50,7 @@ function login_tools_menu() {
       'page callback' => 'drupal_get_form',
       'page arguments' => array('login_tools_admin'),
       'access arguments' => array('administer login tools settings'),
-      'type' => MENU_NORMAL_ITEM,
+      'type' => MENU_CALLBACK,
      );
   
     return $items;
@@ -53,8 +61,8 @@ function login_tools_menu() {
  */
 function login_tools_block_info() {
     // TODO Rename block deltas (e.g. delta-0) to readable strings.
-    $blocks['login_tools']['info'] = t('login_tools');
-    $blocks['login_tools']['cache'] = DRUPAL_CACHE_PER_ROLE;
+    $blocks['login_tools']['info'] = t('Login Tools - require login to view a form');
+    $blocks['login_tools']['cache'] = DRUPAL_NO_CACHE;
     return $blocks;
   }
 
@@ -64,20 +72,19 @@ function login_tools_block_info() {
 function login_tools_block_view($delta) {
     switch ($delta) {
         case 'login_tools':
-            $path = request_path();
-            $login = l(t('Login required'), 
-                variable_get('login_tools_path', 'saml_login'),
-                array('query' => 
-                    array('destination' => $path, 
-                        'attributes' => 
-                            array('title' => t('Login, then return to this form.')
-                            )
-                        )
-                    )
-            );
-            $block['subject'] = t('Cornell login required for access to form');
-            $block['content'] = $login;
+            if (user_is_logged_in()) {
+                $block['subject'] = '';
+                $block['content'] = '';                    
+            }
+            else {
+                $login_page = variable_get('login_tools_path', 'saml_login');
+                $login = t('<a href="@url" title="@title">Login required</a>',
+                    array('@url' => url($login_page, array('query' => drupal_get_destination())),
+                        '@title' => t('Login, then return to this page')));
+                $block['subject'] = variable_get('login_tools_title', t('Cornell login required for access to form'));
+                $block['content'] = $login;
+            }
             break;
     }
-        
+    return $block;       
 }
